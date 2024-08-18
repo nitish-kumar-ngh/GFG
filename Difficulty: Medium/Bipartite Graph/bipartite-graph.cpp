@@ -24,12 +24,25 @@ bool bfs(int u,vector<int>adj[], vector<int>&color){
 	   }
 	   return true;
 }
+bool dfs(int u,vector<int>adj[], vector<int>&color,int c){
+    color[u]=c;
+    for (auto v:adj[u]){
+           if (color[v]==-1){
+	          // color[v]=1-color[u];
+	            if (dfs(v,adj,color,!c)==false)return false;
+	           }else if (color[v]==c)return false;
+	          
+	       
+	       
+    }
+    return true;
+}
 	bool isBipartite(int V, vector<int>adj[]){
 	  
 	   vector<int>color(V,-1);
 	   for (int i=0;i<V;i++){
 	       if (color[i]==-1){
-	           if (bfs(i,adj,color)==false)return false;
+	           if (dfs(i,adj,color,0)==false)return false;
 	       }
 	   }
 	   return true;
