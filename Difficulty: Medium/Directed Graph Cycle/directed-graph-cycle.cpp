@@ -5,37 +5,26 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
   public:
-  bool isCycleDFS(vector<int> adj[],vector<int>&visited,vector<int>&inRecurrsion,int u){
-      visited[u]=true;
-      inRecurrsion[u]=true;
-      
-      for(auto v:adj[u]){
-          if (!visited[v] && isCycleDFS(adj,visited,inRecurrsion,v) ){
-              
-              return true;
-              
-          }else if (inRecurrsion[v]==true){//current call me hai
-              return true;
-          }
-          
+  bool dfs(int u, vector<int> adj[],vector<int>&vis){
+      vis[u]=1;
+      //neighbour
+      for (auto v:adj[u]){
+          if (vis[v]==0){
+              if (dfs(v,adj,vis))return true;
+          }else if (vis[v]==1)return true;
       }
-      inRecurrsion[u]=false;
+      vis[u]=2;
       return false;
-      
-      
-      
-      
   }
     // Function to detect cycle in a directed graph.
     bool isCyclic(int V, vector<int> adj[]) {
-        vector<int>visited(V,false);
-        vector<int>inRecurrsion(V,false);//to check jisme call kiye usi me 
-        for (int i=0;i<V;i++){
-            if (!visited[i] && isCycleDFS(adj,visited,inRecurrsion,i)){
-                return true;
-            }
-        }
-        return false;
+       vector<int>vis(V,0);
+       for (int i=0;i<V;i++){
+           if (!vis[i]){
+              if (dfs(i,adj,vis)) return true;
+           }
+       }
+       return false;
     }
 };
 
