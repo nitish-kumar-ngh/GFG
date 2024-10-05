@@ -6,38 +6,55 @@ using namespace std;
 class Solution
 {
 	public:
-	typedef pair<int,int>P;
+	typedef pair<int,pair<int,int>>P;
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
     {
-       vector<bool>inMST(V,false);
-       priority_queue<P,vector<P>,greater<P> >pq;
-       pq.push({0,0});
-       int sum=0;
-       
-       while(!pq.empty()){
+        //vector<pair<int,int>>mst;
+        //mst.push_back({2,4});
+        //mst.push_back(make_pair(1,2));
+        vector<bool>vis(V,0);
+        int s=0;
+        priority_queue<P,vector<P>,greater<P>>pq;
+      //  int co_node=adj[0][0];//v
+       // int wt=adj[0][0][1];
+        pq.push({0,{0,-1}});
+       // vis[0]=1;
+        //  for (auto m:adj[0]){
+        //         int adjnod=m[0];
+        //         int adjw=m[1];
+        //         if (vis[adjnod]==0){
+        //             pq.push({adjw,{adjnod,0}});
+        //         }
+        //     }
+        while(pq.size()>0){
+            auto k=pq.top();
+            pq.pop();
+            int wet=k.first;
+            int node=k.second.first;
+            int parent=k.second.second;
+           // if(vis[node]==0 && parent!=-1)mst.push_back(make_pair(node,parent));
+            // if (vis[node]==0) {
+            // s+=wet;
+            // vis[node]=1;
+                
+            // }
+            if (vis[node]==1)continue;
+              vis[node]=1;
+              s+=wet;
+                         
+            for (auto m:adj[node]){
+                int adjnode=m[0];
+                int adjwt=m[1];
+                if (vis[adjnode]==0){
+                    pq.push({adjwt,{adjnode,node}});
+                }
+            }
            
-           auto p=pq.top();
-           pq.pop();//(LogE)
-           
-           int wt=p.first;
-           int node=p.second;
-           
-          if(inMST[node]==true)continue;
-             sum+=wt;
-             inMST[node]=true;
-             for (auto tmp:adj[node]){
-                 int wtnode=tmp[1];
-                 int dusranode=tmp[0];
-                 if (inMST[dusranode]==false){
-                     pq.push({wtnode,dusranode});
-                 }
-                 
-             }
-           
-           
-       }
-       return sum;
+        }
+        
+        return s;
+      
     }
 };
 
